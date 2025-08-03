@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Network</title>
+  <link rel="stylesheet" href="newcss.css">
+  <style>
+
+   
+    .result-item {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      gap: 15px;
+    }
+
+    .result-item img {
+      width: 150px;
+      height: auto;
+    }
+
+    .doctor-details {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Hospital Network</h1>
+  </header>
+
+  <main>
+    <section class="search-section">
+      <div class="search-bar">
+        <label for="stateSearch">Select State:</label>
+        <select id="stateSearch" onchange="generateCityOptions()">
+          <option value="">Select State</option>
+          <option value="state1">Andhra Pradesh</option>
+          <option value="state2">Telangana</option>
+        </select>
+      </div>
+
+      <div class="search-bar" id="citySearchContainer">
+        <!-- City search bar will be generated here -->
+      </div>
+
+      <button onclick="search()">Search</button>
+    </section>
+
+    <section class="results-section" id="resultsSection">
+      <!-- Search results will be displayed here -->
+    </section>
+  </main>
+
+  <script>
+    const cities = {
+      state1: ["Vijayawada", "Vishakapatnam", "Kadapa"],
+      state2: ["Hyderabad", "Nalgonda", "Khammam"],
+    };
+
+    const hospitals = {
+      "Vijayawada": [
+        {
+          name: "Max Cure Hospital",
+          image: "2.jpeg",
+          address: "Benz circle, Vijayawada",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Phani", specialty: "Cardiology", experience: "10 years" },
+            { name: "Dr. Mahesh", specialty: "Orthopedics", experience: "8 years" }
+          ]
+        },
+        {
+          name: "Surya Orthopedic Hospital",
+          image: "1.jpeg",
+          address: "Kanur, Vijayawada",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Nageswar Rao", specialty: "Dendrologist", experience: "10 years" },
+            { name: "Dr. Somesh", specialty: "ENT", experience: "8 years" }
+          ]
+        },
+      ],
+      "Vishakapatnam": [
+        {
+          name: "Manipal Hospital",
+          image: "3.jpeg",
+          address: "Beach road, Vizag",
+          timings: "9:00 AM - 5:00 PM",
+          doctors: [
+            { name: "Dr.Srinivas", specialty: "Neurology", experience: "12 years" },
+            { name: "Dr. Manikanta", specialty: "Opthomologist", experience: "6 years" }
+          ]
+        },
+        {
+          name: "Kamakshi Hospital",
+          image: "2.jpeg",
+          address: "Jagadamba centre, Vizag",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Nageswar Rao", specialty: "Cardiology", experience: "10 years" },
+            { name: "Dr. Mahesh", specialty: "Orthopedics", experience: "8 years" }
+          ]
+        },
+      ],
+      "Kadapa": [
+        {
+          name: "YSR General Hospital",
+          image: "5.jpeg",
+          address: "YSR center, Kadapa",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Sambasiva", specialty: "General MD", experience: "12 years" },
+            { name: "Dr. Mohit", specialty: "Surgeon", experience: "6 years" }
+          ]
+        },
+        {
+          name: "Aqsa Hospital",
+          image: "6.jpeg",
+          address: "Raja vaari street, Kadapa",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Srinivas", specialty: "Cardiology", experience: "10 years" },
+            { name: "Dr. Manish", specialty: "Orthopedics", experience: "8 years" }
+          ]
+        },
+      ],
+      "Hyderabad": [
+        {
+          name: "Osmania Hospital",
+          image: "7.jpeg",
+          address: "Main St, Hyderabad",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Venu", specialty: "General Surgeon", experience: "10 years" },
+            { name: "Dr. Dhanush", specialty: "Orthopedics", experience: "8 years" }
+          ]
+        },
+        {
+          name: "AIIMS Hospital",
+          image: "8.jpeg",
+          address: "Gandhi nagar, Road no--2, Hyderabad",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Prasad", specialty: "Cardiology", experience: "10 years" },
+            { name: "Dr. Indra", specialty: "Gastroentrology", experience: "8 years" }
+          ]
+        },
+      ],
+      "Nalgonda": [
+        {
+          name: "Manipal Hospital",
+          image: "9.jpeg",
+          address: "Ambedkar center, Nalgonda",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Aasrita", specialty: "Neurology", experience: "12 years" },
+            { name: "Dr.Nadeem", specialty: "Opthomologist", experience: "6 years" }
+          ]
+        },
+        {
+          name: "Ramesh Hospital",
+          image: "10.jpeg",
+          address: "Cherukumlli vaari street, Nalgonda",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Jagadeesh", specialty: "Anaesthology", experience: "10 years" },
+            { name: "Dr. Lakshman", specialty: "Radiology", experience: "8 years" }
+          ]
+        },
+      ],
+      "Khammam": [
+        {
+          name: "General Hospital",
+          image: "11.jpeg",
+          address: "Main road, Khammam",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Sowmya", specialty: "General MD", experience: "12 years" },
+            { name: "Dr. Mohan", specialty: "Gynacelogy", experience: "6 years" }
+          ]
+        },
+        {
+          name: "Mallemala Hospital",
+          image: "12.jpeg",
+          address: "Gandhi Chowk, Khammam",
+          timings: "24/7",
+          doctors: [
+            { name: "Dr.Balaji", specialty: "Pediatrics", experience: "10 years" },
+            { name: "Dr.Kishore", specialty: "Urology", experience: "8 years" }
+          ]
+        },
+      ]
+    };
+
+    function generateCityOptions() {
+      const stateSelect = document.getElementById("stateSearch");
+      const selectedState = stateSelect.value;
+      const citySearchContainer = document.getElementById("citySearchContainer");
+
+      citySearchContainer.innerHTML = "";
+
+      if (selectedState && cities[selectedState]) {
+        const citySelect = document.createElement("select");
+        citySelect.id = "citySearch";
+        citySelect.innerHTML = '<option value="">Select City</option>';
+
+        cities[selectedState].forEach(city => {
+          const option = document.createElement("option");
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+
+        citySearchContainer.appendChild(citySelect);
+      }
+    }
+
+    function search() {
+      const stateSearchValue = document.getElementById("stateSearch").value;
+      const citySearchValue = document.getElementById("citySearch")?.value;
+
+      if (!stateSearchValue || !citySearchValue) {
+        alert("Please select both state and city.");
+        return;
+      }
+
+      const hospitalsInCity = hospitals[citySearchValue];
+      displayResults(hospitalsInCity);
+    }
+
+    function displayResults(hospitalsInCity) {
+      const resultsSection = document.getElementById("resultsSection");
+      resultsSection.innerHTML = '';
+
+      if (!hospitalsInCity || hospitalsInCity.length === 0) {
+        resultsSection.innerHTML = '<p>No results found.</p>';
+      } else {
+        hospitalsInCity.forEach(hospital => {
+          const hospitalDiv = document.createElement("div");
+          hospitalDiv.classList.add("result-item");
+
+          const hospitalImage = document.createElement("img");
+          hospitalImage.src = hospital.image;
+          hospitalImage.alt = `${hospital.name} Image`;
+          hospitalDiv.appendChild(hospitalImage);
+
+          const hospitalDetails = document.createElement("div");
+          const hospitalName = document.createElement("h3");
+          hospitalName.textContent = hospital.name;
+          const hospitalAddress = document.createElement("p");
+          hospitalAddress.textContent = `Address: ${hospital.address}`;
+          const hospitalTimings = document.createElement("p");
+          hospitalTimings.textContent = `Timings: ${hospital.timings}`;
+
+          hospitalDetails.appendChild(hospitalName);
+          hospitalDetails.appendChild(hospitalAddress);
+          hospitalDetails.appendChild(hospitalTimings);
+
+          const doctorDetails = document.createElement("div");
+          doctorDetails.classList.add("doctor-details");
+
+          hospital.doctors.forEach(doctor => {
+            const doctorInfo = document.createElement("p");
+            doctorInfo.textContent = `Dr. ${doctor.name} - ${doctor.specialty}, ${doctor.experience} of experience`;
+            doctorDetails.appendChild(doctorInfo);
+          });
+
+          hospitalDiv.appendChild(hospitalDetails);
+          hospitalDiv.appendChild(doctorDetails);
+
+          resultsSection.appendChild(hospitalDiv);
+        });
+      }
+    }
+  </script>
+
+</body>
+
+</html>
